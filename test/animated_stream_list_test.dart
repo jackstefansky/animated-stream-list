@@ -1,4 +1,4 @@
-import 'package:animated_stream_list/src/diff_applier.dart';
+/* import 'package:animated_stream_list/src/diff_applier.dart';
 import 'package:animated_stream_list/src/list_controller.dart';
 import 'package:animated_stream_list/src/myers_diff.dart';
 import 'package:flutter/material.dart';
@@ -144,3 +144,4 @@ class MockList extends Mock implements AnimatedListState {
     return super.toString();
   }
 }
+ */
