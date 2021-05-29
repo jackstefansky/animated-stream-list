@@ -1,4 +1,4 @@
-/* import 'dart:math';
+import 'dart:math';
 
 import 'package:animated_stream_list/src/myers_diff.dart';
 import 'package:benchmark_harness/benchmark_harness.dart';
@@ -34,4 +34,4 @@ class TemplateBenchmark extends BenchmarkBase {
 
 main() {
   TemplateBenchmark.main();
-} */
+}

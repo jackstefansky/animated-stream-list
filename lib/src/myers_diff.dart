@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 typedef bool Equalizer(dynamic item1, dynamic item2);
 
 class DiffUtil<E> {
-  static late Equalizer eq;
+  static Equalizer eq;
 
   Future<List<Diff>> calculateDiff(List<E> oldList, List<E> newList,
-      {required Equalizer equalizer}) {
+      {Equalizer equalizer}) {
     eq = equalizer;
     final args = _DiffArguments<E>(oldList, newList);
     return compute(_myersDiff, args);
@@ -55,7 +55,7 @@ PathNode _buildPath<E>(List<E> oldList, List<E> newList, Equalizer equals) {
   final int max = oldSize + newSize + 1;
   final size = (2 * max) + 1;
   final int middle = size ~/ 2;
-  final List<PathNode?> diagonal = [];
+  final List<PathNode> diagonal = List(size);
 
   diagonal[middle + 1] = Snake(0, -1, null);
   for (int d = 0; d < max; d++) {
@@ -68,12 +68,12 @@ PathNode _buildPath<E>(List<E> oldList, List<E> newList, Equalizer equals) {
       int i;
       if ((k == -d) ||
           (k != d &&
-              diagonal[kminus]!.originIndex < diagonal[kplus]!.originIndex)) {
-        i = diagonal[kplus]!.originIndex;
-        prev = diagonal[kplus]!;
+              diagonal[kminus].originIndex < diagonal[kplus].originIndex)) {
+        i = diagonal[kplus].originIndex;
+        prev = diagonal[kplus];
       } else {
-        i = diagonal[kminus]!.originIndex + 1;
-        prev = diagonal[kminus]!;
+        i = diagonal[kminus].originIndex + 1;
+        prev = diagonal[kminus];
       }
 
       diagonal[kminus] = null;
@@ -93,7 +93,7 @@ PathNode _buildPath<E>(List<E> oldList, List<E> newList, Equalizer equals) {
       diagonal[kmiddle] = node;
 
       if (i >= oldSize && j >= newSize) {
-        return diagonal[kmiddle]!;
+        return diagonal[kmiddle];
       }
     }
     diagonal[middle + d - 1] = null;
@@ -102,22 +102,22 @@ PathNode _buildPath<E>(List<E> oldList, List<E> newList, Equalizer equals) {
   throw Exception();
 }
 
-List<Diff> _buildPatch<E>(PathNode? path, List<E> oldList, List<E> newList) {
+List<Diff> _buildPatch<E>(PathNode path, List<E> oldList, List<E> newList) {
   if (path == null) throw ArgumentError("path is null");
 
-  final List<Diff> diffs = [];
+  final List<Diff> diffs = List();
   if (path.isSnake()) {
     path = path.previousNode;
   }
   while (path != null &&
       path.previousNode != null &&
-      path.previousNode!.revisedIndex >= 0) {
+      path.previousNode.revisedIndex >= 0) {
     if (path.isSnake()) throw Exception();
     int i = path.originIndex;
     int j = path.revisedIndex;
 
     path = path.previousNode;
-    int iAnchor = path!.originIndex;
+    int iAnchor = path.originIndex;
     int jAnchor = path.revisedIndex;
 
     List<E> original = oldList.sublist(iAnchor, i);

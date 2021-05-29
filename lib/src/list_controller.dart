@@ -8,42 +8,42 @@ typedef Widget AnimatedStreamListItemBuilder<T>(
 );
 
 class ListController<E> {
-  final GlobalKey<AnimatedListState>? key;
-  final List<E>? items;
+  final GlobalKey<AnimatedListState> key;
+  final List<E> items;
   final Duration duration;
-  final AnimatedStreamListItemBuilder<E>? itemRemovedBuilder;
+  final AnimatedStreamListItemBuilder<E> itemRemovedBuilder;
 
   ListController({
-    required this.key,
-    required this.items,
-    required this.itemRemovedBuilder,
-    required this.duration,
+    @required this.key,
+    @required this.items,
+    @required this.itemRemovedBuilder,
+    @required this.duration,
   })  : assert(key != null),
         assert(itemRemovedBuilder != null),
         assert(items != null);
 
-  AnimatedListState get _list => key!.currentState!;
+  AnimatedListState get _list => key.currentState;
 
   void insert(int index, E item) {
-    items!.insert(index, item);
+    items.insert(index, item);
 
     _list.insertItem(index, duration: duration);
   }
 
   void removeItemAt(int index) {
-    E item = items!.removeAt(index);
+    E item = items.removeAt(index);
     _list.removeItem(
       index,
       (BuildContext context, Animation<double> animation) =>
-          itemRemovedBuilder!(item, index, context, animation),
+          itemRemovedBuilder(item, index, context, animation),
       duration: duration,
     );
   }
 
-  void listChanged(int startIndex, List<dynamic> itemsChanged) {
+  void listChanged(int startIndex, List<E> itemsChanged) {
     int i = 0;
-    for (var item in itemsChanged) {
-      items![startIndex + i] = item;
+    for (E item in itemsChanged) {
+      items[startIndex + i] = item;
       i++;
     }
 
@@ -51,9 +51,9 @@ class ListController<E> {
     _list.setState(() {});
   }
 
-  int get length => items!.length;
+  int get length => items.length;
 
-  E operator [](int index) => items![index];
+  E operator [](int index) => items[index];
 
-  int indexOf(E item) => items!.indexOf(item);
+  int indexOf(E item) => items.indexOf(item);
 }
