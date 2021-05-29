@@ -1,4 +1,4 @@
-abstract class DiffVisitor {
+abstract class DiffVisitor<E> {
   void visitInsertDiff(InsertDiff diff);
 
   void visitDeleteDiff(DeleteDiff diff);

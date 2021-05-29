@@ -14,15 +14,13 @@ class ListController<E> {
   final AnimatedStreamListItemBuilder<E> itemRemovedBuilder;
 
   ListController({
-    @required this.key,
-    @required this.items,
-    @required this.itemRemovedBuilder,
-    @required this.duration,
-  })  : assert(key != null),
-        assert(itemRemovedBuilder != null),
-        assert(items != null);
+    required this.key,
+    required this.items,
+    required this.itemRemovedBuilder,
+    required this.duration,
+  });
 
-  AnimatedListState get _list => key.currentState;
+  AnimatedListState get _list => key.currentState!;
 
   void insert(int index, E item) {
     items.insert(index, item);
@@ -40,7 +38,7 @@ class ListController<E> {
     );
   }
 
-  void listChanged(int startIndex, List<E> itemsChanged) {
+  void listChanged(int startIndex, List<dynamic> itemsChanged) {
     int i = 0;
     for (E item in itemsChanged) {
       items[startIndex + i] = item;
