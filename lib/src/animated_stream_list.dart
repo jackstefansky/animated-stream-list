@@ -48,7 +48,6 @@ class _AnimatedStreamListState<E> extends State<AnimatedStreamList<E>>
   StreamSubscription? _subscription;
 
   void startListening() {
-    _subscription?.cancel();
     _subscription = widget.streamList
       .asyncExpand((list) => _diffUtil
           .calculateDiff(_listController.items, list, equalizer: widget.equals)
